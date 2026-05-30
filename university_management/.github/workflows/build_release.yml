@@ -1,0 +1,97 @@
+name: Build Desktop Releases
+
+on:
+  workflow_dispatch: # Позволяет запускать сборку вручную из интерфейса GitHub
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      # Раскомментируй этот блок, если в проекте есть тесты
+      # - name: Run tests
+      #   run: |
+      #     python tests/test_suite.py
+
+      - name: Build Windows release
+        # --onedir создает папку со всеми нужными dll (работает быстрее и стабильнее, чем --onefile)
+        # --windowed скрывает черную консоль при запуске приложения
+        run: |
+          pyinstaller --noconfirm --clean --onedir --windowed --name "UniversityManagement" main.py
+
+      - name: Upload Windows release
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-release
+          path: dist/UniversityManagement
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build Linux release
+        run: |
+          pyinstaller --noconfirm --clean --onedir --windowed --name "UniversityManagement" main.py
+          chmod +x dist/UniversityManagement/UniversityManagement
+
+      - name: Upload Linux release
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux-release
+          path: dist/UniversityManagement
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build macOS release
+        run: |
+          pyinstaller --noconfirm --clean --onedir --windowed --name "UniversityManagement" main.py
+
+      - name: Upload macOS release
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-release
+          path: dist/UniversityManagement.app
