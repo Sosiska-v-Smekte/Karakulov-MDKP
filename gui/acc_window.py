@@ -73,9 +73,9 @@ class PaymentCard(QFrame):
         amount_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 
         if self.is_history:
-            self.setStyleSheet("background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px;")  # Зеленый
+            self.setStyleSheet("background-color: #d4edda; color: black; border: 1px solid #c3e6cb; border-radius: 5px;")  # Зеленый
         else:
-            self.setStyleSheet("background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 5px;")  # Желтый
+            self.setStyleSheet("background-color: #fff3cd; color: black; border: 1px solid #ffeeba; border-radius: 5px;")  # Желтый
 
         layout.addWidget(amount_label)
 
