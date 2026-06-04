@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QTextEdit, QComboBox, QDateEdit, QMessageBox, QCompleter,
     QListWidget
 )
-from PySide6.QtCore import Qt, QDate
+from PySide6.QtCore import Qt, QDate, Signal
 from core.database import SessionLocal
 from core.models import Work, Employee, WorkType, WorkTeam
 
