@@ -112,43 +112,31 @@ class ApplicationController:
         self.login_win.show()
 
     def show_main_window(self, user):
-        """
-        Перехватывает сигнал успешной аутентификации, закрывает окно входа,
-        создает основную рамку графического интерфейса и внедряет в нее
-        рабочую область, соответствующую роли сотрудника.
-        """
         self.main_win = BaseWindow(user)
-
-        # Подключаем обработчик на событие уничтожения (закрытия) главного окна,
-        # чтобы вернуть окно логина при выходе из аккаунта
-        self.main_win.destroyed.connect(self.handle_window_destruction)
-
-        # Динамическое определение рабочего пространства на основе роли из БД
+        
+        # Слушаем сигнал выхода из аккаунта
+        self.main_win.logout_signal.connect(self.handle_logout)
+        
+        # Динамическое определение рабочего пространства
         if user.role == 'head':
             workspace_widget = HeadWorkspace(user)
         elif user.role in ['teacher', 'uvp']:
-            # Преподаватели и учебно-вспомогательный персонал используют
-            # унифицированный интерфейс двух вкладок (задачи и отправка отчетов)
             workspace_widget = TeacherWorkspace(user)
         elif user.role == 'accountant':
             workspace_widget = AccountantWorkspace(user)
         else:
             workspace_widget = TeacherWorkspace(user)
-
-        # Монтируем рабочую область в QStackedWidget базового окна
+            
         self.main_win.workspace.addWidget(workspace_widget)
         self.main_win.workspace.setCurrentWidget(workspace_widget)
-
-        # Показываем полностью собранное приложение пользователю
         self.main_win.show()
 
-    def handle_window_destruction(self):
-        """
-        Срабатывает автоматически, когда главное окно закрывается через профиль
-        по кнопке 'Выйти из аккаунта'. Сбрасывает ссылки и возвращает форму входа.
-        """
-        self.main_win = None
-        self.start()
+    def handle_logout(self):
+        """Мягкий выход: сначала открываем логин, потом закрываем главное окно"""
+        self.start()  # Открываем форму входа
+        if self.main_win:
+            self.main_win.close()  # Теперь безопасно закрываем старое окно
+            self.main_win = None
 
 
 if __name__ == "__main__":
