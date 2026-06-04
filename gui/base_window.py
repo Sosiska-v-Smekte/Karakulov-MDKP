@@ -10,6 +10,7 @@ from core.database import SessionLocal
 from gui.profile_window import ProfileDialog
 
 class BaseWindow(QMainWindow):
+    logout_signal = Signal() 
     def __init__(self, current_user: Employee):
         super().__init__()
         self.current_user = current_user
@@ -89,8 +90,4 @@ class BaseWindow(QMainWindow):
             db.close()
 
     def trigger_system_logout(self):
-        self.close()
-        from PySide6.QtWidgets import QApplication
-        for widget in QApplication.topLevelWidgets():
-            if widget != self:
-                widget.close()
+        self.logout_signal.emit()
