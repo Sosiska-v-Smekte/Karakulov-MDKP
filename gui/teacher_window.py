@@ -38,13 +38,13 @@ class TeacherTaskCard(QFrame):
 
         if team_record.task_status == 'Выполнено':
             status_label.setText("Отправлено на проверку")
-            self.setStyleSheet("background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px;")
+            self.setStyleSheet("background-color: #d4edda; color: black; border: 1px solid #c3e6cb; border-radius: 5px;")
         elif self.mode == 'todo':
             status_label.setText("Новая задача")
-            self.setStyleSheet("background-color: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;")  # Голубой
+            self.setStyleSheet("background-color: #e3f2fd; color: black; border: 1px solid #b6d4fe; border-radius: 5px;")  # Голубой
         else:
             status_label.setText("В работе")
-            self.setStyleSheet("background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 5px;")  # Желтый
+            self.setStyleSheet("background-color: #fff3cd; color: black; border: 1px solid #ffeeba; border-radius: 5px;")  # Желтый
 
         layout.addWidget(status_label)
 
