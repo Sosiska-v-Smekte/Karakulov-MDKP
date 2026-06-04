@@ -107,11 +107,11 @@ class WorkCard(QFrame):
 
         today = date.today()
         if work.status == 'Завершена':
-            self.setStyleSheet("background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px;")
+            self.setStyleSheet("background-color: #d4edda; color: black; border: 1px solid #c3e6cb; border-radius: 5px;")
         elif work.end_date and work.end_date < today and work.status != 'Завершена':
-            self.setStyleSheet("background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px;")
+            self.setStyleSheet("background-color: #f8d7da; color: black; border: 1px solid #f5c6cb; border-radius: 5px;")
         else:
-            self.setStyleSheet("background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;")
+            self.setStyleSheet("background-color: #f8f9fa; color: black; border: 1px solid #dee2e6; border-radius: 5px;")
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
